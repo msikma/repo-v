@@ -1,0 +1,21 @@
+{
+  "name": "repo-v",
+  "version": "1.0.0",
+  "description": "Blocking script that retrieves Git repo branch information",
+  "main": "repo-v.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Git",
+    "Repository",
+    "Branch",
+    "Info",
+    "Information"
+  ],
+  "author": "Michiel Sikma <michiel@sikma.org>",
+  "license": "MIT",
+  "devDependencies": {
+    "exec-sync": "^0.1.6"
+  }
+}
