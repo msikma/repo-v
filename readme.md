@@ -9,6 +9,18 @@ Keep in mind that synchronous calls will block the thread, meaning this
 should only be used in build systems and the likes.
 
 
+Installing
+----------
+
+This package is [available on npm](https://www.npmjs.com/package/repo-v):
+
+    npm install --save-dev repo-v
+
+The `--save-dev` is used to save the package to your own `packages.json` file.
+
+The source is [available on Github](https://github.com/msikma/repo-v).
+
+
 Usage
 -----
 
