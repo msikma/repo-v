@@ -54,11 +54,11 @@ repoV.getVersion('%foobar%');      // (unknown)
 The `%branch-any%` variable is the most versatile. The following is returned
 depending on the situation:
 
-* local branch: master
-* remote tracking branch (in sync): master
-* remote tracking branch (not in sync): remotes/origin/feature-foo
-* tag: v1.2.3
-* general detached head: v1.0.6-5-g2393761
+* local branch: **master**
+* remote tracking branch (in sync): **master**
+* remote tracking branch (not in sync): **remotes/origin/feature-foo**
+* tag: **v1.2.3**
+* general detached head: **v1.0.6-5-g2393761**
 
 If the `git` command itself is unusable for some reason, all variables
 will become `(unknown)`.
