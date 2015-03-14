@@ -4,6 +4,12 @@
 
 /**
  * Parser function that modifies the output of the 'branch' command.
+ * The Git command outputs something like the following:
+ *
+ *    (HEAD, origin/develop, develop, bugfix-something)
+ *
+ * The branch name we're after is 'bugfix-something'. This function
+ * extracts it from the list.
  *
  * @param {String} str The string returned from the Git command
  * @returns {String} The modified and cleaned up string
@@ -19,7 +25,9 @@ module.exports = {
   // Branch name (even while in detached mode).
   'branch': ['log -n 1 --pretty=%d HEAD', parseBranch],
   // Short commit hash.
-  'rev': ['rev-parse --short HEAD'],
+  'hash': ['rev-parse --short HEAD'],
+  // Full commit hash.
+  'hash-full': ['rev-parse HEAD'],
   // Revision number (number of commits since initial).
-  //'count': ['rev-list HEAD --count']
+  'count': ['rev-list HEAD --count']
 };

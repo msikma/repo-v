@@ -120,7 +120,8 @@ var parser = {
   'gitArgs': {},
 
   // Helper regex for parsing segments.
-  'tplRe': /%([^%]*)%/g
+  // Parses everything in between % characters, but permits escaping \%.
+  'tplRe': /%([^%]*?(\\\%)?[^%]*?[^\\])%/g
 };
 
 module.exports = parser;
