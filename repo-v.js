@@ -2,11 +2,9 @@
 // Copyright (C) 2015, Michiel Sikma <michiel@sikma.org>
 // MIT licensed
 
-//TODO: %an\%escaped%-%segment%
-
 var parser = require('./parser');
 var defaultArgs = require('./defaults');
-var defaultTemplate = '%branch%-%count%-%hash%';
+var defaultTemplate = '%branch-any%-%count%-%hash%';
 
 var repoV = {
   /**

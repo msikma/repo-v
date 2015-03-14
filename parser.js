@@ -13,14 +13,32 @@ var parser = {
    * @returns {Object} The template segments and their command results
    */
   'parseSegmentsFromTemplate': function(tpl) {
-    var n, segment, parsedSegments = {};
+    var n, segment, segmentCmd, cmdSuccess, parsedSegments = {};
     var templateSegments = parser.parseTemplate(tpl);
+
+    // Iterate over every segment in the template and run its
+    // corresponding Git command.
     for (n = 0; n < templateSegments.length; ++n) {
       segment = templateSegments[n];
+      segmentCmd = parser.gitArgs[segment];
+
+      // Attempt to run the command. If it fails, set the segment to
+      // the unknown segment string.
       try {
-        parsedSegments[segment] = parser.parseSegment(parser.gitArgs[segment]);
+        parsedSegments[segment] = parser.parseSegment(segmentCmd);
+        cmdSuccess = true;
       } catch(e) {
         parsedSegments[segment] = parser.unknownSegment;
+        cmdSuccess = false;
+      }
+
+      // If we have a transformer function, call it on the output
+      // before returning it, even if the command failed.
+      if (segmentCmd[1]) {
+        parsedSegments[segment] = segmentCmd[1].apply(this, [
+          parsedSegments[segment],
+          cmdSuccess]
+        );
       }
     }
     return parsedSegments;
@@ -45,19 +63,12 @@ var parser = {
    * If a transformer function is defined, the output is first passed through
    * it before it's returned.
    *
-   * @param {Array} segmentInfo An array with command (and transformer function.)
+   * @param {Array} segmentCmd An array with command (and transformer function.)
    * @returns {String} The result of the segment's corresponding command.
    */
-  'parseSegment': function(segmentInfo) {
+  'parseSegment': function(segmentCmd) {
     // Run the command and retrieve the output.
-    var execResult = execSync(parser.gitCmd + ' ' + segmentInfo[0]);
-
-    // If we have a transformer function, call it on the output
-    // before returning it.
-    if (segmentInfo[1]) {
-      execResult = segmentInfo[1].apply(this, [execResult]);
-    }
-    return execResult;
+    return execSync(parser.gitCmd + ' ' + segmentCmd[0]);
   },
 
   /**

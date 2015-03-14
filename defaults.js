@@ -3,31 +3,55 @@
 // MIT licensed
 
 /**
- * Parser function that modifies the output of the 'branch' command.
- * The Git command outputs something like the following:
- *
- *    (HEAD, origin/develop, develop, bugfix-something)
- *
- * The branch name we're after is 'bugfix-something'. This function
- * extracts it from the list.
+ * Parser function that modifies the output of the 'count-hex' command.
+ * This transforms the number into a hexadecimal one. In actuality,
+ * this is an example of how to use transformer functions for Git output.
  *
  * @param {String} str The string returned from the Git command
+ * @param {Boolean} success Whether the command was successful or not
  * @returns {String} The modified and cleaned up string
  */
-var parseBranch = function(str) {
-  var branches = /\((.+?)\)/.exec(str);
-  branches = branches[1].split(',');
-  return branches[branches.length - 1].trim();
+var countHex = function(str, success) {
+  if (!success) {
+    return str;
+  }
+  var n = parseInt(str, 10);
+  return n.toString(16);
+};
+
+/**
+ * Parser function that modifies the output of the 'branch-any' command.
+ * This removes the 'heads/' part from the output for a regular branch.
+ *
+ * @param {String} str The string returned from the Git command
+ * @param {Boolean} success Whether the command was successful or not
+ * @returns {String} The modified and cleaned up string
+ */
+var anyBranch = function(str, success) {
+  if (!success) {
+    return str;
+  }
+  // Filter out heads/ in case of a regular branch name.
+  if (str.indexOf('heads/') === 0) {
+    str = str.replace('heads/', '');
+  }
+  return str;
 };
 
 // Return all standard command formulas.
 module.exports = {
   // Branch name (even while in detached mode).
-  'branch': ['log -n 1 --pretty=%d HEAD', parseBranch],
+  'branch': ['for-each-ref --format=\'%(refname:short)\' refs/heads'],
+  // Branch name (but returns different answers per mode; see readme).
+  'branch-any': ['describe --all', anyBranch],
+  // All branch names
+  'branch-all': ['log -n 1 --pretty=%D HEAD'],
   // Short commit hash.
   'hash': ['rev-parse --short HEAD'],
   // Full commit hash.
   'hash-full': ['rev-parse HEAD'],
   // Revision number (number of commits since initial).
-  'count': ['rev-list HEAD --count']
+  'count': ['rev-list HEAD --count'],
+  // Revision number in hexadecimal (example of how to use a transformer).
+  'count-hex': ['rev-list HEAD --count', countHex]
 };
