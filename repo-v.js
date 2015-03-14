@@ -1,37 +1,30 @@
-#!/usr/bin/env node
 // repo-v <https://github.com/msikma/repo-v>
 // Copyright (C) 2015, Michiel Sikma <michiel@sikma.org>
 // MIT licensed
 
-var execSync = require("exec-sync");
+var parser = require('./parser');
+var defaultArgs = require('./defaults');
+var defaultTemplate = '%branch%-%rev%-%count%';
 
-var gitCmd = 'git', gitData = {}, gitArgs = {
-  // Branch name; 'master'
-  //'branch': ['rev-parse --abbrev-ref HEAD'],
-  // get branch while in detached: 
-  'branch': ['git log -n 1 --pretty=%d HEAD', parseBranch],
-  // ?
-  'rev': ['rev-parse --short HEAD'],
-  // Revision number (number of commits since initial)
-  'count': ['rev-list HEAD --count']
+var repoV = {
+  /**
+   * Returns a string with Git repository version information, parsed
+   * from a passed template string (or the default).
+   *
+   * @param {String} tpl The template to use for the version string generation.
+   * @returns {String} A string of version information
+   */
+  'getVersion': function(tpl) {
+    tpl = typeof tpl !== 'undefined' ? tpl : defaultTemplate;
+    var segments = parser.parseSegmentsFromTemplate(tpl);
+    return parser.decorateTemplate(tpl, segments);
+  },
+
+  // Reference to the parser module.
+  'parser': parser
 };
-var tplDefault = '%branch%-%rev%-%count%';
-var tplRe = new RegExp('%[^%]*%', 'g');
 
-var parse = function(tpl) {
-  var execResult;
-  try {
-    execResult = execSync(gitArgs['branch']);
-  } catch(e) {
-    execResult = '(unknown)';
-  }
-  
+// Stick in our default arguments.
+repoV.parser.mergeGitArgs(defaultArgs);
 
-  //var matches = tpl.match(tplRe);
-  //console.log(matches);
-};
-parse(tplDefault);
-
-var parseBranch = function(str) {
-  return str;
-};
+module.exports = repoV;
