@@ -35,18 +35,10 @@ console.log(version); // e.g. master-27-7072898
 In this example, we're on the master branch, the 27th commit, identified
 by the short hash `7072898`.
 
-You can send a template to `getVersion()` to get customized output. It
-supports a number of variables:
-
-* branch – branch name (even when in detached mode)
-* count – commit number
-* hash – short hash (6 characters)
-* hash-full – long hash
-
-To use them, pass a string as argument containing the variables you want
-in between % signs. The default template is `%branch-any%-%count%-%hash%`.
-Any variable that is for some reason unavailable will be replaced with
-*(unknown)*:
+You can pass a template to `getVersion()` to get customized output. Use a
+string as argument containing the variables you want in between % signs.
+The default template is `%branch-any%-%count%-%hash%`. Any variable that
+is for some reason unavailable will be replaced with `(unknown)`:
 
 ```javascript
 repoV.getVersion('%branch%');      // master
@@ -67,6 +59,9 @@ depending on the situation:
 * remote tracking branch (not in sync): remotes/origin/feature-foo
 * tag: v1.2.3
 * general detached head: v1.0.6-5-g2393761
+
+If the `git` command itself is unusable for some reason, all variables
+will become `(unknown)`.
 
 ### Advanced
 
