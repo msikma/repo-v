@@ -9,9 +9,14 @@
     "Branch",
     "Information"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/msikma/repo-v.git"
+  },
   "author": "Michiel Sikma <michiel@sikma.org>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "exec-sync": "^0.1.6"
-  }
+  },
+  "readmeFilename": "readme.md"
 }
