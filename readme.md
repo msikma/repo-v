@@ -8,6 +8,8 @@ print version numbers for staging (non-live) purposes.
 Keep in mind that synchronous calls will block the thread, meaning this
 should only be used in build systems and the likes.
 
+There's a [Python version of this script](https://github.com/msikma/repov).
+
 
 Installing
 ----------
