@@ -27,7 +27,7 @@ Usage
 Import the module and run `getVersion()` to get started:
 
 ```javascript
-var repoV = require('../repo-v');
+var repoV = require('repo-v');
 var version = repoV.getVersion();
 console.log(version); // e.g. master-27-7072898
 ```
