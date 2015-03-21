@@ -4,7 +4,7 @@
 
 var parser = require('./parser');
 var defaultArgs = require('./defaults');
-var defaultTemplate = '%branch-any%-%count%-%hash%';
+var defaultTpl = '%branch-any%-%count%-%hash%';
 
 var repoV = {
   /**
@@ -15,7 +15,7 @@ var repoV = {
    * @returns {String} A string of version information
    */
   'getVersion': function(tpl) {
-    tpl = typeof tpl !== 'undefined' ? tpl : defaultTemplate;
+    tpl = typeof tpl !== 'undefined' ? tpl : defaultTpl;
     var segments = parser.parseSegmentsFromTemplate(tpl);
     return parser.decorateTemplate(tpl, segments);
   },

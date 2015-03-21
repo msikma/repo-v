@@ -5,6 +5,19 @@
 var execSync = require('exec-sync');
 
 var parser = {
+  // The active Git command.
+  'gitCmd': 'git',
+
+  // The argument recipes we can pass to Git to get version information.
+  'gitArgs': {},
+
+  // Helper regex for parsing segments.
+  // Parses everything in between % characters, but permits escaping \%.
+  'tplRe': /%([^%]*?(\\\%)?[^%]*?[^\\])%/g,
+
+  // The substitute in case we can't parse or understand a segment.
+  'unknownSegment': '(unknown)',
+
   /**
    * Extracts segments from a template string, runs Git commands to retrieve
    * their results where possible, and then returns them as an object.
@@ -119,20 +132,7 @@ var parser = {
       combinedArgs[arg] = args[arg];
     }
     return parser.setGitArgs(combinedArgs);
-  },
-
-  // The substitute in case we can't parse or understand a segment.
-  'unknownSegment': '(unknown)',
-
-  // The active Git command.
-  'gitCmd': 'git',
-
-  // The argument recipes we can pass to Git to get version information.
-  'gitArgs': {},
-
-  // Helper regex for parsing segments.
-  // Parses everything in between % characters, but permits escaping \%.
-  'tplRe': /%([^%]*?(\\\%)?[^%]*?[^\\])%/g
+  }
 };
 
 module.exports = parser;
