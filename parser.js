@@ -2,7 +2,7 @@
 // Copyright (C) 2015, Michiel Sikma <michiel@sikma.org>
 // MIT licensed
 
-var execSync = require('exec-sync');
+var exec = require('sync-exec');
 
 var parser = {
   // The active Git command.
@@ -63,7 +63,7 @@ var parser = {
    * @param {String} tpl The template to match against
    * @returns {Array} The matched segments from the template
    */
-  parseTemplate: function(tpl) {
+  'parseTemplate': function(tpl) {
     var match, matches = [];
     while ((match = parser.tplRe.exec(tpl)) != null) {
       matches.push(match[1]);
@@ -81,7 +81,7 @@ var parser = {
    */
   'parseSegment': function(segmentCmd) {
     // Run the command and retrieve the output.
-    return execSync(parser.gitCmd + ' ' + segmentCmd[0]);
+    return exec(parser.gitCmd + ' ' + segmentCmd[0]).stdout.trim();
   },
 
   /**
