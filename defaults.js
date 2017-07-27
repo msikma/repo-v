@@ -20,6 +20,21 @@ var countHex = function(str, success) {
 };
 
 /**
+ * Takes a date returned to us from Git and turns it into a Python date object.
+ * The date is given in Unix time, e.g. '1486023001'.
+ *
+ * @param {String} str The string returned from the Git command
+ * @param {Boolean} success Whether the command was successful or not
+ * @returns {String} The time as JS timestamp
+ */
+var makedate = function(ts, success) {
+  if (!success) {
+    return str;
+  }
+  return new Date(ts * 1000);
+};
+
+/**
  * Parser function that modifies the output of the 'branch-any' command.
  * This removes the 'heads/' part from the output for a regular branch.
  *
@@ -53,5 +68,7 @@ module.exports = {
   // Revision number (number of commits since initial).
   'count': ['rev-list HEAD --count'],
   // Revision number in hexadecimal (example of how to use a transformer).
-  'count-hex': ['rev-list HEAD --count', countHex]
+  'count-hex': ['rev-list HEAD --count', countHex],
+  // Last commit date.
+  'last-commit': ['log -n 1 --date=format:%s --pretty=format:%cd', makedate]
 };

@@ -19,6 +19,16 @@ var repoV = {
     var segments = parser.parseSegmentsFromTemplate(tpl);
     return parser.decorateTemplate(tpl, segments);
   },
+  
+  /**
+   * Returns the result of a single item in its raw form.
+   * This is useful for last-commit which is normally a datetime object.
+   *
+   * @param {String} item The item to parse
+   */
+  'getRaw': function(item) {
+    return parser.parseItem(item);
+  },
 
   // Reference to the parser module.
   'parser': parser

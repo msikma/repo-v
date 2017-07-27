@@ -15,8 +15,5 @@
   },
   "author": "Michiel Sikma <michiel@sikma.org>",
   "license": "MIT",
-  "dependencies": {
-    "exec-sync": "^0.1.6"
-  },
   "readmeFilename": "readme.md"
 }

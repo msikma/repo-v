@@ -2,7 +2,7 @@
 // Copyright (C) 2015, Michiel Sikma <michiel@sikma.org>
 // MIT licensed
 
-var execSync = require('exec-sync');
+var execSync = require('child_process').execSync;
 
 var parser = {
   // The active Git command.
@@ -38,7 +38,7 @@ var parser = {
       // Attempt to run the command. If it fails, set the segment to
       // the unknown segment string.
       try {
-        parsedSegments[segment] = parser.parseSegment(segmentCmd);
+        parsedSegments[segment] = parser.parseSegment(segmentCmd).toString().trim();
         cmdSuccess = true;
       } catch(e) {
         parsedSegments[segment] = parser.unknownSegment;
@@ -55,6 +55,29 @@ var parser = {
       }
     }
     return parsedSegments;
+  },
+  
+  /**
+   * Returns the raw value of a single item.
+   *
+   * @param {String} item The item to parse
+   */
+  'parseItem': function(item) {
+    var itemCmd = parser.gitArgs[item];
+    var cmdSuccess, result;
+    try {
+      result = parser.parseSegment(itemCmd).toString().trim();
+      cmdSuccess = true;
+    } catch(e) {
+      result = parser.unknownSegment;
+      cmdSuccess = false;
+    }
+    // If we have a transformer function, call it on the output
+    // before returning it, even if the command failed.
+    if (itemCmd[1]) {
+      result = itemCmd[1].apply(this, [result, cmdSuccess]);
+    }
+    return result;
   },
 
   /**
