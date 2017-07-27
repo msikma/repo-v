@@ -86,7 +86,7 @@ var parser = {
    * @param {String} tpl The template to match against
    * @returns {Array} The matched segments from the template
    */
-  parseTemplate: function(tpl) {
+  'parseTemplate': function(tpl) {
     var match, matches = [];
     while ((match = parser.tplRe.exec(tpl)) != null) {
       matches.push(match[1]);
